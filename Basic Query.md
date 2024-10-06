@@ -188,4 +188,116 @@ ORDER BY <column-name> [ASC|DESC];
 ```
 ![image](https://github.com/user-attachments/assets/984ff61e-0d4a-46d1-a263-8a358de673f5)
 
+# Pattern Matching in MySQL
+
+## 1. Select all the records whose text field starts or ends or contains specific substring
+Start with specific substring
+```sql
+SELECT * FROM <table-name> WHERE <field-name> LIKE "<substring>%";
+```
+![image](https://github.com/user-attachments/assets/356c2fcb-6b80-4e48-a1d8-4ebea14eca1c)
+
+Ends with specific substring
+```sql
+SELECT * FROM <table-name> WHERE <field-name> LIKE  "%<substring>";
+ ```
+
+Contains specific substring
+```sql
+SELECT * FROM <table-name> WHERE <field-name> LIKE "%<substring>%";
+```
+![image](https://github.com/user-attachments/assets/5f28a575-1cb5-4b1f-bd2d-a5e9992eb8a5)
+
+## 2. Substring start from particular index like 1 or 2
+Here  _ denotes 1 position, so if we want to get all records whose field has 'i' character from 2 position
+```sql
+SELECT * FROM <table-name> WHERE <field-name> LIKE "_i%";
+```
+![image](https://github.com/user-attachments/assets/e50d13a1-f26f-4d01-bb46-957a1ef3f3a6)
+
+# GROUP BY in SQL
+
+The `GROUP BY` clause in SQL is used to arrange identical data into groups. It is often used with aggregate functions like `COUNT`, `SUM`, `AVG`, `MAX`, and `MIN` to perform operations on each group of data.
+
+## SQL Command
+
+```sql
+SELECT <column-names>, aggregate_function(<column-name>)
+FROM <table-name>
+WHERE <condition>
+GROUP BY <column-name>;
+```
+![image](https://github.com/user-attachments/assets/e89d03f3-2282-4cc6-81e8-a532936deab8)
+
+# Using HAVING with GROUP BY in SQL
+
+The `HAVING` clause in SQL is used to filter records after aggregation has taken place with the `GROUP BY` clause. It allows you to impose conditions on groups created by the `GROUP BY` clause, similar to how the `WHERE` clause filters individual records.
+
+## SQL Syntax
+
+```sql
+SELECT <column-names>, aggregate_function(<column-name>)
+FROM <table-name>
+WHERE <condition>
+GROUP BY <column-name>
+HAVING <aggregate_condition>;
+```
+![image](https://github.com/user-attachments/assets/59778c94-ac4a-408d-acda-8b50d248b87c)
+
+# Exporting a Table to CSV in MySQL
+
+Exporting data from a MySQL table to a CSV (Comma-Separated Values) file is a straightforward process using the `SELECT ... INTO OUTFILE` statement. This method allows you to save the results of your query directly into a CSV file.
+
+## SQL Command
+
+To export a table to a CSV file, use the following syntax:
+
+```sql
+SELECT <columns>
+FROM <table-name>
+INTO OUTFILE '<file-path>'
+FIELDS TERMINATED BY ',' 
+ENCLOSED BY '"' 
+LINES TERMINATED BY '\n';
+```
+![image](https://github.com/user-attachments/assets/3a6d8c33-4b58-404a-bbf4-087f9ca36c96)
+
+As you can see in above image, access error is thrown. SQL doesn't allow data to be saved anywhere due to security reasons.
+To check where data can be saved use following command
+```sql
+SHOW VARIABLE LIKE 'secure_file_priv';
+```
+![image](https://github.com/user-attachments/assets/3803a2a4-46db-4b1a-8ac6-a3eed8e07674)
+
+# Backup and Restore MySQL Database
+
+## Backup a MySQL Database
+
+The `mysqldump` command is used to create a backup of a MySQL database. The backup file is saved as an SQL script that can be used to recreate the database.
+
+### Syntax
+
+```bash
+mysqldump -u <username> -p <database-name> > <backup-file.sql>
+```
+## Backup specific tables
+
+### Syntax
+```bash
+mysqldump -u root -p world employee > /path/to/backup/employee_backup.sql
+```
+## Backup all databases
+```bash
+mysqldump -u root -p --all-databases > /path/to/backup/all_databases_backup.sql
+```
+
+## Restore a MySQL database
+```bash
+mysql -u <username> -p <database-name> < <backup-file.sql>
+```
+
+## Restore all database
+```bash
+mysql -u root -p < /path/to/backup/all_databases_backup.sql
+```
 
